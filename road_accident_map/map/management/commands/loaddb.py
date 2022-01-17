@@ -13,11 +13,12 @@ class Command(BaseCommand):
         with open(options['Json_File'], encoding='utf-8-sig') as json_file:
             json_data = json.loads(json_file.read())
             for data in json_data:
-                if data.keys() == '_id':
-                    RoadAccidentPoint.id.save(data)
-                if data.keys() == 'type':
-                    RoadAccidentPoint.id.save(data)
-                if data.keys() == 'geometry':
-                    RoadAccidentPoint.id.save(data)
+                for i in data:
+                    if i == '_id':
+                        RoadAccidentPoint.id.save(data[i])
+                    if i == 'type':
+                        RoadAccidentPoint.type.save(data[i])
+                    if i == 'geometry':
+                        RoadAccidentPoint.geometry.save(data[i])
 
-            self.stdout.write(self.style.SUCCESS('Successfully closed poll "%s"'))
+            # self.stdout.write(self.style.SUCCESS('Successfully closed poll "%s"'))
