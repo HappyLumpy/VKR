@@ -13,20 +13,21 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         with open(options['Json_File'], encoding='utf-8-sig') as json_file:
             json_data = json.loads(json_file.read())
+            counter = 0
             for data in json_data:
-                new_data = {'id': data['_id']['$oid'], 'type': data['type'], 'geometry': data['geometry'], 'properties': data['properties']}
-                counter = 0
+                new_data = {'id': data['_id']['$oid'], 'type': data['type'], 'geometry': data['geometry']}
+                # print(new_data)
                 new_point = PointSerializer(data=new_data)
                 if new_point.is_valid():
                     counter +=1
                     new_point.save()
                     print(counter)
-                else:
-
-                    # print(new_data)
-                    print('not valid')
-                # return newpoint
-                print(counter)
+                # else:
+                #
+                #     # print(new_data)
+                #     print('not valid')
+                # # return newpoint
+                # print(counter)
 
 
 
