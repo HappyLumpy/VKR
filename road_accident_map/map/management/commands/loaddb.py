@@ -1,5 +1,6 @@
 from django.core.management import BaseCommand
 import json
+from map.serializers import *
 from map.models import RoadAccidentPoint
 
 
@@ -13,12 +14,20 @@ class Command(BaseCommand):
         with open(options['Json_File'], encoding='utf-8-sig') as json_file:
             json_data = json.loads(json_file.read())
             for data in json_data:
-                for i in data:
-                    if i == '_id':
-                        RoadAccidentPoint.id.save(data[i])
-                    if i == 'type':
-                        RoadAccidentPoint.type.save(data[i])
-                    if i == 'geometry':
-                        RoadAccidentPoint.geometry.save(data[i])
+                new_data = {'id': data['_id']['$oid'], 'type': data['type'], 'geometry': data['geometry'], 'properties': data['properties']}
+                counter = 0
+                new_point = PointSerializer(data=new_data)
+                if new_point.is_valid():
+                    counter +=1
+                    new_point.save()
+                    print(counter)
+                else:
 
-            # self.stdout.write(self.style.SUCCESS('Successfully closed poll "%s"'))
+                    # print(new_data)
+                    print('not valid')
+                # return newpoint
+                print(counter)
+
+
+
+
