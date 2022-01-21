@@ -6,7 +6,8 @@ from rest_framework.serializers import ModelSerializer, Serializer, ListField, C
 
 
 class PointSerializer(serializers.ModelSerializer):
+    inwater = serializers.BooleanField(source='inWater')
 
     class Meta:
         model = RoadAccidentPoint
-        fields = '__all__'
+        fields = "__all__"
