@@ -3,4 +3,4 @@ from .models import *
 
 @admin.register(RoadAccidentPoint)
 class MapAdmin(admin.ModelAdmin):
-    list_display = ('id',)
+    list_display = ('id', 'type', 'geometry')
