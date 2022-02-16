@@ -17,3 +17,7 @@ class RoadAccidentPoint(models.Model):
     valid = models.BooleanField()
     validPercent = models.IntegerField()
 
+
+class ConcentrationAccident(models.Model):
+    listid = models.JSONField()
+    coordinates = models.JSONField()

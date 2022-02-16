@@ -1,4 +1,4 @@
-from .models import RoadAccidentPoint
+from .models import RoadAccidentPoint, ConcentrationAccident
 from rest_framework import serializers
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
@@ -16,5 +16,28 @@ class PointSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RoadAccidentPoint
-        fields = ('id', 'type', 'inwater')
+        fields = '__all__'
+
+
+class PointUpploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RoadAccidentPoint
+        fields = ('type', 'geometry', 'properties')
+
+
+class ConcentrationPointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ConcentrationAccident
+        fields = ('listid',)
+
+class ConcentrationPolygonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ConcentrationAccident
+        fields = ('coordinates',)
+
+
+class ConcentrationListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ConcentrationAccident
+        fields = ('coordinates', 'listid')
 

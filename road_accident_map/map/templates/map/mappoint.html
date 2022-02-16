@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Add custom icons with Markers</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<style>
+.marker {
+display: block;
+border: none;
+border-radius: 50%;
+cursor: pointer;
+padding: 0;
+}
+</style>
+
+<div id="map"></div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoidHVyYm9sdW1weSIsImEiOiJja3ptaGRpcngwMDg3MnNwZjZ6YXNuaXJyIn0.mDsP4nrcOwI6O7xKAsliZQ';
+const map = new mapboxgl.Map({
+container: 'map',
+style: 'mapbox://styles/mapbox/streets-v11',
+center: [30.381389, 59.925278],
+zoom: 10
+});
+
+    async function fetchPointsJSON() {
+  const response = await fetch('http://127.0.0.1:8000/api/v1/point/');
+  const points = await response.json();
+  return points;
+}
+
+let drawMap = (data,geojson)=>{
+
+
+    for (const marker of geojson.features) {
+// Create a DOM element for each marker.
+
+// add markers to map
+for (const feature of geojson.features) {
+// create a HTML element for each feature
+const marker1 = new mapboxgl.Marker({ color: 'black'})
+.setLngLat(feature.geometry.coordinates)
+    .setPopup(
+            new mapboxgl.Popup({ offset: 25 }) // add popups
+              .setHTML(
+                `<h3>Тип ДТП: ${feature.properties.DTP_V}\</h3>
+                 <p>Город: ${feature.properties.r_name}</p>
+                 <p>Район: ${feature.properties.District}</p>
+                 <p>Улица: ${feature.properties.infoDtp.street}</p>
+                 <p>Учатсники ТС: ${feature.properties.K_TS}</p>
+                 <p>Всего участников: ${feature.properties.K_UCH}</p>
+                 <p>Постродавших: ${feature.properties.RAN}</p>
+                 <p>Год: ${feature.properties.year}</p>`
+
+              )
+          )
+.addTo(map);
+
+}
+}
+}
+
+
+
+
+fetchPointsJSON().then(
+    points=>{
+        const geojson = {
+            'type': 'FeatureCollection',
+            features:
+                points
+
+
+        };
+        console.log(geojson)
+        drawMap(points,geojson);
+    }
+
+
+
+)
+
+// Add markers to the map.
+
+</script>
+
+</body>
+</html>
