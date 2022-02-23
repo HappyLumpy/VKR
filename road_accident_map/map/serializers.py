@@ -1,9 +1,5 @@
 from .models import RoadAccidentPoint, ConcentrationAccident
 from rest_framework import serializers
-from rest_framework.views import APIView
-from django.contrib.auth.models import User
-from datetime import datetime
-from rest_framework.serializers import ModelSerializer, Serializer, ListField, ChoiceField, BooleanField
 
 
 class PointSerializer(serializers.ModelSerializer):
@@ -25,10 +21,11 @@ class PointUpploadSerializer(serializers.ModelSerializer):
         fields = ('type', 'geometry', 'properties')
 
 
-class ConcentrationPointSerializer(serializers.ModelSerializer):
+class PointLoad(serializers.ModelSerializer):
     class Meta:
-        model = ConcentrationAccident
-        fields = ('listid',)
+        model = RoadAccidentPoint
+        fields = ('geometry',)
+
 
 class ConcentrationPolygonSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,4 +37,3 @@ class ConcentrationListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ConcentrationAccident
         fields = ('coordinates', 'listid')
-

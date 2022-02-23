@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Add custom icons with Markers</title>
+<title>DTP map</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
@@ -34,7 +34,7 @@ zoom: 10
 });
 
     async function fetchPointsJSON() {
-  const response = await fetch('http://127.0.0.1:8000/api/v1/point/');
+  const response = await fetch('/api/v1/point/');
   const points = await response.json();
   return points;
 }
@@ -43,12 +43,8 @@ let drawMap = (data,geojson)=>{
 
 
     for (const marker of geojson.features) {
-// Create a DOM element for each marker.
-
-// add markers to map
 for (const feature of geojson.features) {
-// create a HTML element for each feature
-const marker1 = new mapboxgl.Marker({ color: 'black'})
+const marker = new mapboxgl.Marker({ color: 'black'})
 .setLngLat(feature.geometry.coordinates)
     .setPopup(
             new mapboxgl.Popup({ offset: 25 }) // add popups
@@ -69,10 +65,6 @@ const marker1 = new mapboxgl.Marker({ color: 'black'})
 }
 }
 }
-
-
-
-
 fetchPointsJSON().then(
     points=>{
         const geojson = {
@@ -85,14 +77,7 @@ fetchPointsJSON().then(
         console.log(geojson)
         drawMap(points,geojson);
     }
-
-
-
 )
-
-// Add markers to the map.
-
 </script>
-
 </body>
 </html>

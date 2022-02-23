@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Add a polygon to a map using a GeoJSON source</title>
+<title>DTP concentrations map</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
@@ -21,25 +21,22 @@ body { margin: 0; padding: 0; }
         center: [30.335784,59.933943],
         zoom: 15
     });
-
     async function fetchPointsJSON() {
-  const response = await fetch('http://127.0.0.1:8000/api/v1/concentrationpoints/');
+  const response = await fetch('/api/v1/concentrationpoints/');
   const points = await response.json();
   return points;
 }
-
 let drawMap = (geojson)=>{
-    console.log('inside 3st then',geojson)
   map.on('load', () => {
-        map.addSource('national-park', {
+        map.addSource('DTP concentrations', {
             'type': 'geojson',
             'data': geojson
         });
 
         map.addLayer({
-            'id': 'park-boundary',
+            'id': 'polygons',
             'type': 'fill',
-            'source': 'national-park',
+            'source': 'DTP concentrations',
             'paint': {
                 'fill-color': 'red',
                 'fill-opacity': 0.3
@@ -48,7 +45,6 @@ let drawMap = (geojson)=>{
         });
     });
 }
-
 fetchPointsJSON().then(
     polys=>{
         let geojson = {
@@ -65,19 +61,13 @@ fetchPointsJSON().then(
                     }
                 }
             )
-            console.log('inside 1st then',geojson)
 
         })
          return geojson
     }
 ).then(geojson=> {
-    console.log('inside 2nd then',geojson)
     drawMap(geojson)
 })
-
-// Add markers to the map.
-
 </script>
-
 </body>
 </html>
